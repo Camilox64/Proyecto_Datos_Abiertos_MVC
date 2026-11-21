@@ -1,0 +1,8 @@
+Validación visual del aplicativo local
+Fecha: 20 de noviembre de 2026
+
+Vista principal: carga correcta en http://127.0.0.1:5000/.
+Resumen visible: 100 registros, 2 departamentos, 14 municipios y fecha máxima 17/01/2024.
+Filtro revisado en navegador: q=MEDELLIN.
+Resultado del filtro: 61 filas, con municipio MEDELLIN en los registros mostrados.
+La búsqueda consulta SQL Server mediante la ruta principal de Flask.

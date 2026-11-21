@@ -1,0 +1,12 @@
+total_registros|departamentos|municipios|fecha_maxima
+---------------|-------------|----------|------------
+100|2|14|2024-01-17
+id_api|fecha|departamento_nombre|municipio_nombre|edad|sexo|estado
+------|-----|-------------------|----------------|----|----|------
+6391011|2024-01-17|ANTIOQUIA|MEDELLIN|67|M|Leve
+6391010|2024-01-17|ANTIOQUIA|MEDELLIN|82|M|Leve
+6391009|2024-01-17|ANTIOQUIA|MEDELLIN|74|F|Leve
+6391008|2024-01-17|ANTIOQUIA|MEDELLIN|10|F|Leve
+6391007|2024-01-17|ANTIOQUIA|MEDELLIN|38|M|Leve
+
+Segunda sincronización de 100 filas: ver evidence/sync_repeat.txt

@@ -1,0 +1,3 @@
+API rows on second sync: 100
+new rows inserted: 0
+database summary: {'total': 100, 'departamentos': 2, 'municipios': 14, 'fecha_mas_reciente': datetime.datetime(2024, 1, 17, 0, 0)}

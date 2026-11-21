@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Consulta histórica de reportes COVID-19 publicados en datos.gov.co">
+  <title>Datos abiertos | COVID-19 Colombia</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="{{ url_for('inicio') }}"><span class="wordmark-mark">DA</span> Datos Abiertos</a>
+    <span class="source-label">Fuente pública · INS</span>
+  </header>
+
+  <main class="shell">
+    <section class="intro">
+      <p class="eyebrow">SALUD PÚBLICA · COLOMBIA</p>
+      <h1>Reportes históricos de COVID-19</h1>
+      <p class="lede">Consulta registros almacenados desde el conjunto de datos del Instituto Nacional de Salud.</p>
+      <div class="dataset-note">
+        <span class="note-dot" aria-hidden="true"></span>
+        <span>La fuente publica información hasta enero de 2024. Esta consulta es histórica.</span>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="Acciones de datos">
+      <div>
+        <h2>Consulta de datos</h2>
+        <p>Sincroniza una muestra reciente o filtra lo que ya está en SQL Server.</p>
+      </div>
+      <form action="{{ url_for('sincronizar') }}" method="post">
+        <button class="button button-primary" type="submit"><span aria-hidden="true">↻</span> Consultar API y guardar</button>
+      </form>
+    </section>
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+      {% if mensajes %}<div class="messages" aria-live="polite">
+        {% for categoria, mensaje in mensajes %}<p class="message message-{{ categoria }}">{{ mensaje }}</p>{% endfor %}
+      </div>{% endif %}
+    {% endwith %}
+    {% if error_bd %}<p class="message message-error" role="alert">{{ error_bd }}</p>{% endif %}
+
+    <section class="metrics" aria-label="Resumen de registros almacenados">
+      <article class="metric"><span class="metric-label">REGISTROS GUARDADOS</span><strong>{{ "{:,}".format(resumen.total).replace(",", ".") }}</strong><span class="metric-foot">en la base de datos</span></article>
+      <article class="metric"><span class="metric-label">DEPARTAMENTOS</span><strong>{{ resumen.departamentos }}</strong><span class="metric-foot">con registros</span></article>
+      <article class="metric"><span class="metric-label">MUNICIPIOS</span><strong>{{ resumen.municipios }}</strong><span class="metric-foot">con registros</span></article>
+      <article class="metric metric-date"><span class="metric-label">REPORTE MÁS RECIENTE</span><strong>{% if resumen.fecha_mas_reciente %}{{ resumen.fecha_mas_reciente.strftime('%d %b %Y') }}{% else %}—{% endif %}</strong><span class="metric-foot">entre los datos guardados</span></article>
+    </section>
+
+    <section class="records">
+      <div class="records-heading">
+        <div><h2>Registros</h2><p>Se muestran hasta 100 filas, ordenadas por fecha de reporte.</p></div>
+        <form class="search" action="{{ url_for('inicio') }}" method="get">
+          <label class="sr-only" for="q">Buscar departamento, municipio o estado</label>
+          <input id="q" type="search" name="q" value="{{ filtro }}" placeholder="Departamento, municipio o estado">
+          <button class="button button-light" type="submit">Buscar</button>
+          {% if filtro %}<a class="clear-link" href="{{ url_for('inicio') }}">Limpiar</a>{% endif %}
+        </form>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID del caso</th><th>Fecha de reporte</th><th>Departamento</th><th>Municipio</th><th>Edad</th><th>Sexo</th><th>Contagio</th><th>Estado</th></tr></thead>
+          <tbody>
+            {% for fila in registros %}
+            <tr>
+              <td class="id-cell">{{ fila.id_api }}</td>
+              <td>{% if fila.fecha_reporte_web %}{{ fila.fecha_reporte_web.strftime('%d/%m/%Y') }}{% else %}—{% endif %}</td>
+              <td>{{ fila.departamento_nombre or "—" }}</td>
+              <td>{{ fila.municipio_nombre or "—" }}</td>
+              <td>{{ fila.edad if fila.edad is not none else "—" }}</td>
+              <td>{{ fila.sexo or "—" }}</td>
+              <td>{{ fila.tipo_contagio or "—" }}</td>
+              <td><span class="status">{{ fila.estado or "Sin dato" }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="8" class="empty">{% if filtro %}No hay coincidencias para “{{ filtro }}”.{% else %}Aún no hay registros. Usa el botón “Consultar API y guardar”.{% endif %}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="table-caption">La búsqueda consulta SQL Server. El identificador de la fuente impide guardar un caso dos veces.</p>
+    </section>
+
+    <footer class="footer">
+      <span>Proyecto académico · Modelo, Vista y Controlador</span>
+      <a href="https://www.datos.gov.co/Salud-y-Protecci-n-Social/Casos-positivos-de-COVID-19-en-Colombia-/gt2j-8ykr" target="_blank" rel="noopener">Ver conjunto en datos.gov.co ↗</a>
+    </footer>
+  </main>
+</body>
+</html>
