@@ -2,6 +2,10 @@
 
 Aplicación académica en Flask que consulta el recurso público **Casos positivos de COVID-19 en Colombia**, conserva una muestra en SQL Server y permite buscarla desde el navegador.
 
+## Repositorio
+
+El código fuente y las evidencias del proyecto están publicados en [GitHub](https://github.com/Camilox64/Proyecto_Datos_Abiertos_MVC).
+
 ## Conjunto de datos
 
 - **Nombre:** Casos positivos de COVID-19 en Colombia.
@@ -78,6 +82,7 @@ evidence/                      Respuesta de API y evidencia de carga
 - `evidence/carga_sql.txt`: cantidad insertada y consulta de verificación en SQL Server.
 - `evidence/sync_repeat.txt`: segunda sincronización de 100 filas, con cero duplicados nuevos.
 - `evidence/web_validation.txt`: resultado de la revisión de la página principal y del filtro por Medellín.
+- `evidence/capturas/`: capturas de la sincronización, la vista principal y el filtro por Envigado.
 
 La sincronización de esta muestra histórica no representa una actualización epidemiológica actual. Los datos conservan el corte publicado por el INS.
 
